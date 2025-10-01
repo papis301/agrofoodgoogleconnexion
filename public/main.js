@@ -1,6 +1,7 @@
 // main.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // 🔹 Configuration Firebase
 const firebaseConfig = {
@@ -17,22 +18,45 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
+const db = getFirestore(app);
+
 
 // Récupération des éléments HTML
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const userInfo = document.getElementById("userInfo");
+const profileBtn = document.getElementById("profileBtn");
+const profileInfo = document.getElementById("profileInfo");
 
 // 🔹 Connexion Google → redirection
 if (loginBtn) {
   loginBtn.addEventListener("click", () => {
-    signInWithPopup(auth, provider)
-      .then(result => {
-        console.log("Connexion réussie :", result.user);
-        window.location.href = "/dashboard"; // redirection vers dashboard
-      })
-      .catch(error => console.error("Erreur connexion :", error));
-  });
+  signInWithPopup(auth, provider)
+    .then(async (result) => {
+      const user = result.user;
+      console.log("Connexion réussie :", user);
+
+      // Vérifie si l'utilisateur existe déjà
+      const userDoc = doc(db, "usersagrofood", user.uid);
+      const docSnap = await getDoc(userDoc);
+
+      if (!docSnap.exists()) {
+        // Ajoute l'utilisateur dans Firestore
+        await setDoc(userDoc, {
+          email: user.email,
+          displayName: user.displayName,
+          phoneNumber: user.phoneNumber || null,
+          uid: user.uid
+        });
+        console.log("Utilisateur enregistré dans Firestore ✅");
+      } else {
+        console.log("Utilisateur déjà enregistré dans Firestore");
+      }
+
+      window.location.href = "/dashboard"; // Redirection après login
+    })
+    .catch(error => console.error("Erreur connexion :", error));
+});
 }
 
 // 🔹 Déconnexion
@@ -44,6 +68,12 @@ if (logoutBtn) {
     });
   });
 }
+
+if (profileBtn) {
+    profileBtn.addEventListener("click", () => {
+        window.location.href = "/profil"; // route Symfony
+    });
+} 
 
 // 🔹 Vérifier l’état de connexion (évite boucle infinie)
 onAuthStateChanged(auth, user => {

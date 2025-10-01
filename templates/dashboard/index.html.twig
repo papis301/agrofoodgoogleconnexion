@@ -2,7 +2,10 @@
 
 {% block body %}
     <h1>Bienvenue sur le Dashboard</h1>
+
 <div id="userInfoDashboard"></div>
+<!-- Bouton Profil -->
+<button id="profileBtn" style="display:inline;">Voir Profil</button>
 <button id="logoutBtn" onclick="logout()" style="display:none;">Se déconnecter</button>
 <script type="module" src="{{ asset('main.js') }}"></script>
 
