@@ -10,6 +10,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            logout:
+                path: app_logout
+                target: /
             lazy: true
             provider: users_in_memory
 

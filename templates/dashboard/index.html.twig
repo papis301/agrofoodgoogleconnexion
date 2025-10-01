@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bienvenue sur le Dashboard</h1>
+<div id="userInfoDashboard"></div>
+<button id="logoutBtn" onclick="logout()" style="display:none;">Se déconnecter</button>
+<script type="module" src="{{ asset('main.js') }}"></script>
+
+{% endblock %}
