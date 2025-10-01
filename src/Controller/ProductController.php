@@ -34,6 +34,15 @@ final class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $firebaseUid = $request->request->get('firebaseUid');
+
+            if (empty($firebaseUid)) {
+                $this->addFlash('error', 'Vous devez être connecté avec Google pour ajouter un produit.');
+                return $this->redirectToRoute('app_login'); // ou autre route de login
+            }
+
+            $product->setFirebaseUid($firebaseUid);
             
             // Récupérer les fichiers uploadés
             $images = $form->get('images')->getData();
