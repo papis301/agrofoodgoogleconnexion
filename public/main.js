@@ -26,7 +26,7 @@ const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 const userInfo = document.getElementById("userInfo");
 const profileBtn = document.getElementById("profileBtn");
-const profileInfo = document.getElementById("profileInfo");
+const produitBtn = document.getElementById("produitBtn");
 
 // 🔹 Connexion Google → redirection
 if (loginBtn) {
@@ -72,6 +72,12 @@ if (logoutBtn) {
 if (profileBtn) {
     profileBtn.addEventListener("click", () => {
         window.location.href = "/profil"; // route Symfony
+    });
+} 
+
+if (produitBtn) {
+    produitBtn.addEventListener("click", () => {
+        window.location.href = "/product"; // route Symfony
     });
 } 
 
