@@ -20,6 +20,8 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 
+export { auth, provider }; // Exporter pour utilisation dans d'autres modules
+
 
 // Récupération des éléments HTML
 const loginBtn = document.getElementById("loginBtn");
@@ -117,3 +119,5 @@ function logout() {
 }
 
 window.logout = logout; // rendre disponible dans HTML
+window.auth = auth;
+

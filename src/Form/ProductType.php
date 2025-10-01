@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType; // ✅ le bon import
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ProductType extends AbstractType
 {
@@ -18,7 +19,9 @@ class ProductType extends AbstractType
             ->add('description')
             ->add('price')
             ->add('createdAt')
-            ->add('firebaseUid')
+            ->add('firebaseUid', HiddenType::class, [
+                    'mapped' => true,
+                ])
             ->add('images', FileType::class, [
                         'label' => 'Images du produit',
                         'multiple' => true,
