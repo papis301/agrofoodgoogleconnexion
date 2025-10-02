@@ -34,6 +34,8 @@ class Product
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        // ⚡ Date automatique à la création
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int { return $this->id; }

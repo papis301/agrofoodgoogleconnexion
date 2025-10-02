@@ -25,6 +25,23 @@ final class ProductController extends AbstractController
         ]);
     }
 
+     #[Route('/dashboard/mes-produits', name: 'app_mes_produits')]
+    public function mesProduits(ProductRepository $productRepository): Response
+    {
+        // 🔹 Récupérer l'UID Firebase depuis session (après connexion Firebase)
+        $firebaseUid = $_SESSION['firebaseUid'] ?? null;
+
+        if (!$firebaseUid) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $produits = $productRepository->findBy(['firebaseUid' => $firebaseUid]);
+
+        return $this->render('product/mes_produits.html.twig', [
+            'produits' => $produits
+        ]);
+    }
+
     #[Route('/product/new', name: 'app_product_new')]
     public function new(Request $request, EntityManagerInterface $em, SluggerInterface $slugger): Response
     {
